@@ -15,15 +15,13 @@ limitations under the License.
 */
 package flow
 
-import "github.com/google/generative-ai-go/genai"
-
 // High-level workflow abstraction
 type (
 	Flow struct {
 		AnthropicAgents map[string]*AnthropicAgent
 		GoogleAgents    map[string]*GoogleAgent
 		OpenAIAgents    map[string]*OpenAIAgent
-		Tools           map[*Function]func(*Config) error
+		Tools           map[*Tool]func(*Config) error
 		Resources       map[string]*Resource
 	}
 
@@ -48,7 +46,7 @@ func OpenAIAgents(agents map[string]*OpenAIAgent) FlowOption {
 	}
 }
 
-func Tools(tools map[*Function]func(*Config) error) FlowOption {
+func Tools(tools map[*Tool]func(*Config) error) FlowOption {
 	return func(o *Flow) {
 		o.Tools = tools
 	}
@@ -81,39 +79,8 @@ func (f *Flow) AddOpenAIAgent(name string, agent *OpenAIAgent) {
 	f.OpenAIAgents[name] = agent
 }
 
-// Pass the function's name, description & parameters
-// params should be formatted as map[parameterName]parameterType
-func (f *Flow) AddTool(name, desc string, params map[string]any, function func(*Config) error) {
-	var p []genai.Schema
-	for k, v := range params {
-		var t genai.Type
-		a := v.(string)
-		if a[0:1] == "[]" && (a[2:5] != "rune" && a[2:5] != "byte") {
-			t = genai.TypeArray
-		} else {
-			switch a {
-			case "bool":
-				t = genai.TypeBoolean
-			case "string", "[]byte", "[]rune":
-				t = genai.TypeString
-			case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr", "byte", "rune":
-				t = genai.TypeInteger
-			case "float32", "float64", "complex64", "complex128":
-				t = genai.TypeNumber
-			default:
-				t = genai.TypeObject
-			}
-		}
-		p = append(p, genai.Schema{
-			Type:        t,
-			Description: k,
-		})
-	}
-	f.Tools[&Function{
-		name,
-		desc,
-		p,
-	}] = function
+func (f *Flow) AddTool(tool *Tool, function func(*Config) error) {
+	f.Tools[tool] = function
 }
 
 func (f *Flow) AddResource(name string, resource *Resource) {
