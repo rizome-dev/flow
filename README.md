@@ -17,19 +17,17 @@ contact us: [hi (at) rizome.dev](mailto:hi@rizome.dev)
 
 ## what is flow?
 
-pre-existing agent workflow libraries are great, but they have one major conceptual problem; agents can take actions, groups of agents can take actions, and the abstractions for both tend to get muddled.
+flow aims to solve two pain points of existing agent frameworks:
+1. both agents & workflows have instructions, and with the use of tools, it tends to get messy
+2. tools belong to agents, which means they have to get passed around
 
-a larger, more glaring flaw is that tools belong to agents - this creates a situation where tools have to be handed off, which impacts your ability to write high-performant multi-agent workflows
+we propose a higher-level of abstraction; the `Flow`. all `Agents` have access to the flow's `Tools` & `Resources`; hooks to datastores such as AlloyDB.
 
-that's the entire point of a workflow library! we propose a higher-level of abstraction; the `Flow`.
+the various `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & a native client.
 
-all `Agents` have access to the flow's `Extensions`, a fancy word for tools, & `Resources`, hooks to datastores such as AlloyDB.
+all tools take a `Config` struct, which is a wrapper for all of the common information you would need in a typical tool call, and return an error.
 
-the various `Agent` classes have names & clients; the clients are just wrappers for the llm provider vis-a-vis [maragu.dev/llm](https://maragu.dev/llm).
-
-extension functions take a `Config` struct, which is a wrapper for all of the common information you would need in a typical tool call, and return an error.
-
-theoretically, nearly every extension function will take in the previous message, do something with it, and append the results either to the messages, or to the appropriate `Resource`, which we then direct the llm to.
+theoretically, nearly every tool will take in the previous message, do something with it, and append the results either to the messages, or to the appropriate `Resource`, which we then direct the llm to.
 
 simple, right?
 
