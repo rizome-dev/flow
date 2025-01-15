@@ -11,7 +11,9 @@
 go get github.com/rizome-dev/flow
 ```
 
-built by: [rizome labs](https://rizome.dev) | hi (at) rizome.dev
+built by: [rizome labs](https://rizome.dev)
+
+contact us: [hi (at) rizome.dev](mailto:hi@rizome.dev)
 
 ## what is flow?
 

@@ -20,37 +20,37 @@ import "github.com/google/generative-ai-go/genai"
 // High-level workflow abstraction
 type (
 	Flow struct {
-		AnthrophicAgents []*AnthropicAgent
-		GoogleAgents     []*GoogleAgent
-		OpenAIAgents     []*OpenAIAgent
-		Extensions       map[*Function]func(*Config) error
-		Resources        map[string]*Resource
+		AnthropicAgents map[string]*AnthropicAgent
+		GoogleAgents    map[string]*GoogleAgent
+		OpenAIAgents    map[string]*OpenAIAgent
+		Tools           map[*Function]func(*Config) error
+		Resources       map[string]*Resource
 	}
 
 	FlowOption func(o *Flow)
 )
 
-func AnthropicAgents(agents []*AnthropicAgent) FlowOption {
+func AnthropicAgents(agents map[string]*AnthropicAgent) FlowOption {
 	return func(o *Flow) {
-		o.AnthrophicAgents = agents
+		o.AnthropicAgents = agents
 	}
 }
 
-func GoogleAgents(agents []*GoogleAgent) FlowOption {
+func GoogleAgents(agents map[string]*GoogleAgent) FlowOption {
 	return func(o *Flow) {
 		o.GoogleAgents = agents
 	}
 }
 
-func OpenAIAgents(agents []*OpenAIAgent) FlowOption {
+func OpenAIAgents(agents map[string]*OpenAIAgent) FlowOption {
 	return func(o *Flow) {
 		o.OpenAIAgents = agents
 	}
 }
 
-func Extensions(extensions map[*Function]func(*Config) error) FlowOption {
+func Tools(tools map[*Function]func(*Config) error) FlowOption {
 	return func(o *Flow) {
-		o.Extensions = extensions
+		o.Tools = tools
 	}
 }
 
@@ -70,20 +70,20 @@ func NewFlow(opts ...FlowOption) *Flow {
 }
 
 func (f *Flow) AddAnthropicAgent(name string, agent *AnthropicAgent) {
-	f.AnthrophicAgents = append(f.AnthrophicAgents, agent)
+	f.AnthropicAgents[name] = agent
 }
 
 func (f *Flow) AddGoogleAgent(name string, agent *GoogleAgent) {
-	f.GoogleAgents = append(f.GoogleAgents, agent)
+	f.GoogleAgents[name] = agent
 }
 
 func (f *Flow) AddOpenAIAgent(name string, agent *OpenAIAgent) {
-	f.OpenAIAgents = append(f.OpenAIAgents, agent)
+	f.OpenAIAgents[name] = agent
 }
 
 // Pass the function's name, description & parameters
 // params should be formatted as map[parameterName]parameterType
-func (f *Flow) AddExtension(name, desc string, params map[string]any, function func(*Config) error) {
+func (f *Flow) AddTool(name, desc string, params map[string]any, function func(*Config) error) {
 	var p []genai.Schema
 	for k, v := range params {
 		var t genai.Type
@@ -109,7 +109,7 @@ func (f *Flow) AddExtension(name, desc string, params map[string]any, function f
 			Description: k,
 		})
 	}
-	f.Extensions[&Function{
+	f.Tools[&Function{
 		name,
 		desc,
 		p,

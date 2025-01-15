@@ -20,7 +20,6 @@ import (
 )
 
 type (
-	// ~Tool
 	Function struct {
 		Name        string
 		Description string
@@ -50,7 +49,7 @@ func (c *Config) AddLastMessage(msg *Message) error {
 }
 
 func (f *Flow) CallTool(conf *Config) error {
-	for x, y := range f.Extensions {
+	for x, y := range f.Tools {
 		if x.Name == conf.Name {
 			return y(conf)
 		}

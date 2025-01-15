@@ -23,20 +23,11 @@ import (
 )
 
 type (
-	AnthropicAgent struct {
-		Name   string
-		Client *llm.AnthropicClient
-	}
+	AnthropicAgent struct{ *llm.AnthropicClient }
 
-	GoogleAgent struct {
-		Name   string
-		Client *llm.GoogleClient
-	}
+	GoogleAgent struct{ *llm.GoogleClient }
 
-	OpenAIAgent struct {
-		Name   string
-		Client *llm.OpenAIClient
-	}
+	OpenAIAgent struct{ *llm.OpenAIClient }
 )
 
 func (f *Flow) NewAnthropicAgent(ctx context.Context, name string) {
@@ -44,21 +35,7 @@ func (f *Flow) NewAnthropicAgent(ctx context.Context, name string) {
 	client := llm.NewAnthropicClient(llm.NewAnthropicClientOptions{
 		Key: ANTHROPIC_API_KEY,
 	})
-	f.AnthrophicAgents = append(f.AnthrophicAgents, &AnthropicAgent{
-		name,
-		client,
-	})
-}
-
-func (f *Flow) NewOpenAIAgent(ctx context.Context, name string) {
-	OPENAI_API_KEY := os.Getenv("OPENAI_API_KEY")
-	client := llm.NewOpenAIClient(llm.NewOpenAIClientOptions{
-		Key: OPENAI_API_KEY,
-	})
-	f.OpenAIAgents = append(f.OpenAIAgents, &OpenAIAgent{
-		name,
-		client,
-	})
+	f.AnthropicAgents[name] = &AnthropicAgent{client}
 }
 
 func (f *Flow) NewGoogleAgent(ctx context.Context, name string) {
@@ -66,8 +43,13 @@ func (f *Flow) NewGoogleAgent(ctx context.Context, name string) {
 	client := llm.NewGoogleClient(llm.NewGoogleClientOptions{
 		Key: GOOGLE_API_KEY,
 	})
-	f.GoogleAgents = append(f.GoogleAgents, &GoogleAgent{
-		name,
-		client,
+	f.GoogleAgents[name] = &GoogleAgent{client}
+}
+
+func (f *Flow) NewOpenAIAgent(ctx context.Context, name string) {
+	OPENAI_API_KEY := os.Getenv("OPENAI_API_KEY")
+	client := llm.NewOpenAIClient(llm.NewOpenAIClientOptions{
+		Key: OPENAI_API_KEY,
 	})
+	f.OpenAIAgents[name] = &OpenAIAgent{client}
 }
