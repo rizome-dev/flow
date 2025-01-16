@@ -5,7 +5,7 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/rizome-dev/flow)](https://pkg.go.dev/github.com/rizome-dev/flow)
 [![Go Report Card](https://goreportcard.com/badge/github.com/rizome-dev/flow)](https://goreportcard.com/report/github.com/rizome-dev/flow)
 
-⚠️ **This library is in development**. Things will probably break, but existing functionality is usable. ⚠️
+⚠️ **This is an internal library belonging to rizome labs, and is currently in development**. Things will probably break, but existing functionality is usable. ⚠️
 
 ```shell
 go get github.com/rizome-dev/flow
@@ -17,13 +17,11 @@ contact us: [hi (at) rizome.dev](mailto:hi@rizome.dev)
 
 ## what is flow?
 
-flow aims to solve two pain points of existing agent frameworks:
-1. both agents & workflows have instructions, and with the use of tools, it tends to get messy
-2. tools belong to agents, which means they have to get passed around
+aims to model [smolagents](https://github.com/huggingface/smolagents)'s simplicity.
 
-we propose a higher-level of abstraction; the `Flow`. all `Agents` have access to the flow's `Tools` & `Resources`; hooks to datastores such as AlloyDB.
+all `Agents` have access to the flow's `Tools` & `Resources`; hooks to datastores such as AlloyDB.
 
-the various `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & a native client.
+the various `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & the native client.
 
 all tools take a `Config` struct, which is a wrapper for all of the common information you would need in a typical tool call, and return an error.
 
