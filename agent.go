@@ -16,9 +16,6 @@ limitations under the License.
 package flow
 
 import (
-	"context"
-	"os"
-
 	"github.com/samjtro/go-dsr"
 	"maragu.dev/llm"
 )
@@ -43,7 +40,7 @@ type (
 	}
 
 	DeepseekAgent struct {
-		Client      *dsr.Client
+		Client      *dsr.ChatClient
 		Instruction string
 		Role        string
 	}
@@ -65,53 +62,5 @@ func Instruction(i string) AgentOption {
 func Role(r string) AgentOption {
 	return func(o *AgentOptions) {
 		o.Role = r
-	}
-}
-
-func (f *Flow) NewAnthropicAgent(ctx context.Context, name string, opts ...AgentOption) {
-	var opt AgentOptions
-	for _, o := range opts {
-		o(&opt)
-	}
-	ANTHROPIC_API_KEY := os.Getenv("ANTHROPIC_API_KEY")
-	client := llm.NewAnthropicClient(llm.NewAnthropicClientOptions{
-		Key: ANTHROPIC_API_KEY,
-	})
-	f.AnthropicAgents[name] = &AnthropicAgent{
-		client,
-		opt.Instruction,
-		opt.Role,
-	}
-}
-
-func (f *Flow) NewGoogleAgent(ctx context.Context, name string, opts ...AgentOption) {
-	var opt AgentOptions
-	for _, o := range opts {
-		o(&opt)
-	}
-	GOOGLE_API_KEY := os.Getenv("GOOGLE_API_KEY")
-	client := llm.NewGoogleClient(llm.NewGoogleClientOptions{
-		Key: GOOGLE_API_KEY,
-	})
-	f.GoogleAgents[name] = &GoogleAgent{
-		client,
-		opt.Instruction,
-		opt.Role,
-	}
-}
-
-func (f *Flow) NewOpenAIAgent(ctx context.Context, name string, opts ...AgentOption) {
-	var opt AgentOptions
-	for _, o := range opts {
-		o(&opt)
-	}
-	OPENAI_API_KEY := os.Getenv("OPENAI_API_KEY")
-	client := llm.NewOpenAIClient(llm.NewOpenAIClientOptions{
-		Key: OPENAI_API_KEY,
-	})
-	f.OpenAIAgents[name] = &OpenAIAgent{
-		client,
-		opt.Instruction,
-		opt.Role,
 	}
 }

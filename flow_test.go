@@ -2,8 +2,11 @@ package flow_test
 
 import (
 	"testing"
+
+	"github.com/rizome-dev/flow"
 )
 
 func Test(t *testing.T) {
-	// parrallel agent call to determine the best answer
+	f := flow.NewFlow()
+	f.AddDeepseekAgent("master")
 }

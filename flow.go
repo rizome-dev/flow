@@ -15,6 +15,13 @@ limitations under the License.
 */
 package flow
 
+import (
+	"os"
+
+	"github.com/samjtro/go-dsr"
+	"maragu.dev/llm"
+)
+
 type (
 	Flow struct {
 		AnthropicAgents map[string]*AnthropicAgent
@@ -70,23 +77,79 @@ func NewFlow(opts ...FlowOption) *Flow {
 	for _, o := range opts {
 		o(&f)
 	}
+	if f.AnthropicAgents == nil {
+		f.AnthropicAgents = make(map[string]*AnthropicAgent)
+	}
+	if f.GoogleAgents == nil {
+		f.GoogleAgents = make(map[string]*GoogleAgent)
+	}
+	if f.OpenAIAgents == nil {
+		f.OpenAIAgents = make(map[string]*OpenAIAgent)
+	}
+	if f.DeepseekAgents == nil {
+		f.DeepseekAgents = make(map[string]*DeepseekAgent)
+	}
 	return &f
 }
 
-func (f *Flow) AddAnthropicAgent(name string, agent *AnthropicAgent) {
-	f.AnthropicAgents[name] = agent
+func (f *Flow) AddAnthropicAgent(name string, opts ...AgentOption) {
+	var opt AgentOptions
+	for _, o := range opts {
+		o(&opt)
+	}
+	ANTHROPIC_API_KEY := os.Getenv("ANTHROPIC_API_KEY")
+	client := llm.NewAnthropicClient(llm.NewAnthropicClientOptions{
+		Key: ANTHROPIC_API_KEY,
+	})
+	f.AnthropicAgents[name] = &AnthropicAgent{
+		client,
+		opt.Instruction,
+		opt.Role,
+	}
 }
 
-func (f *Flow) AddGoogleAgent(name string, agent *GoogleAgent) {
-	f.GoogleAgents[name] = agent
+func (f *Flow) AddDeepseekAgent(name string, opts ...AgentOption) {
+	var opt AgentOptions
+	for _, o := range opts {
+		o(&opt)
+	}
+	client := dsr.NewChatClient()
+	f.DeepseekAgents[name] = &DeepseekAgent{
+		client,
+		opt.Instruction,
+		opt.Role,
+	}
 }
 
-func (f *Flow) AddOpenAIAgent(name string, agent *OpenAIAgent) {
-	f.OpenAIAgents[name] = agent
+func (f *Flow) AddGoogleAgent(name string, opts ...AgentOption) {
+	var opt AgentOptions
+	for _, o := range opts {
+		o(&opt)
+	}
+	client := llm.NewGoogleClient(llm.NewGoogleClientOptions{
+		Key: os.Getenv("GOOGLE_API_KEY"),
+	})
+	f.GoogleAgents[name] = &GoogleAgent{
+		client,
+		opt.Instruction,
+		opt.Role,
+	}
 }
 
-func (f *Flow) AddDeepseekAgent(name string, agent *DeepseekAgent) {
-	f.DeepseekAgents[name] = agent
+func (f *Flow) AddOpenAIAgent(name string, opts ...AgentOption) {
+	var opt AgentOptions
+	for _, o := range opts {
+		o(&opt)
+	}
+	OPENAI_API_KEY := os.Getenv("OPENAI_API_KEY")
+	client := llm.NewOpenAIClient(llm.NewOpenAIClientOptions{
+		Key: OPENAI_API_KEY,
+	})
+	f.OpenAIAgents[name] = &OpenAIAgent{
+		client,
+		opt.Instruction,
+		opt.Role,
+	}
 }
 
 func (f *Flow) AddTool(tool *Tool, function func(*Config) error) {
