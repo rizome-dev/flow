@@ -25,8 +25,6 @@ that being said, if your definition of an "agent" is just an llm that has access
 
 flow is a WORKFLOW framework for building multi-client workflows, that incorporate some level of agentic behavior (WIP). the primary goal is to create efficient, modular structures to manage workflows.
 
-we call all clients with instructions & roles Agents, as i just haven't come up with a better name yet, but do not confuse this with the specific semantic term of Agent in the context of rl-in-LLMs.
-
 all `Agents` have access to the flow's `Tools` & `Resources`; hooks to datastores such as AlloyDB.
 
 the OpenAI, Anthropic & Google `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & the native client.
