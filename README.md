@@ -15,12 +15,6 @@ built by: [rizome labs](https://rizome.dev)
 
 contact us: [hi (at) rizome.dev](mailto:hi@rizome.dev)
 
-## what flow is not
-
-while we are incorporating some level of agentic behavior (WIP), the point of this library is to provide a framework for building efficient multi-client workflows with tools & resources; NOT for building agents.
-
-there are many good options for building ReAct, MRKL, etc. agents - and this is not one of them. that being said, if your definition of an "agent" is just an llm that has access to tools - then this is for you!
-
 ## what flow is
 
 flow is a framework for building multi-provider & -client workflows.
@@ -37,9 +31,17 @@ theoretically, nearly every tool will take in the previous message, do something
 
 simple, right?
 
-planned features:
+## what flow is not
+
+while we are incorporating some level of agentic behavior (WIP), the point of this library is to provide a framework for building efficient multi-client workflows with tools & resources; NOT for building agents.
+
+there are many good options for building ReAct, MRKL, etc. agents - and this is not one of them. that being said, if your definition of an "agent" is just an llm that has access to tools - then this is for you!
+
+## planned features
+
 - resources
 - parallel tool calls
 
 ## examples
+
 ### agent context switch
