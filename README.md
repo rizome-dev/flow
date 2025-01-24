@@ -1,6 +1,6 @@
 # flow
 
-<img src="/logo.png" alt="flow - rizome labs" width="250" align="right">
+<img src="/internal/logo.png" alt="flow - rizome labs" width="250" align="right">
 
 [![GoDoc](https://pkg.go.dev/badge/github.com/rizome-dev/flow)](https://pkg.go.dev/github.com/rizome-dev/flow)
 [![Go Report Card](https://goreportcard.com/badge/github.com/rizome-dev/flow)](https://goreportcard.com/report/github.com/rizome-dev/flow)
