@@ -5,6 +5,8 @@ go 1.23.4
 require (
 	cloud.google.com/go/alloydb v1.14.1
 	github.com/google/generative-ai-go v0.19.0
+	github.com/openai/openai-go v0.1.0-alpha.45
+	github.com/samjtro/go-dsr v0.0.0-20250123194555-3a4c43e41185
 	maragu.dev/llm v0.0.0-20250114115323-919ca24d432f
 )
 
@@ -30,8 +32,6 @@ require (
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
 	github.com/mattn/go-sqlite3 v1.14.24 // indirect
-	github.com/openai/openai-go v0.1.0-alpha.45 // indirect
-	github.com/samjtro/go-dsr v0.0.0-20250123194555-3a4c43e41185 // indirect
 	github.com/tidwall/gjson v1.18.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
