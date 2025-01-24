@@ -15,13 +15,23 @@ built by: [rizome labs](https://rizome.dev)
 
 contact us: [hi (at) rizome.dev](mailto:hi@rizome.dev)
 
-## what is flow?
+## what flow is not
 
-aims to model [smolagents](https://github.com/huggingface/smolagents)'s simplicity.
+while we are incorporating some level of agentic behavior (WIP), the point of this library is to provide a framework for building workflows; NOT agents for building agents. there are many good options for building ReAct, MRKL, etc. agents - and this is not one of them.
+
+that being said, if your definition of an "agent" is just an llm that has access to tools - then this is for you!
+
+## what flow is
+
+flow is a WORKFLOW framework for building multi-client workflows, that incorporate some level of agentic behavior (WIP). the primary goal is to create efficient, modular structures to manage workflows.
+
+we call all clients with instructions & roles Agents, as i just haven't come up with a better name yet, but do not confuse this with the specific semantic term of Agent in the context of rl-in-LLMs.
 
 all `Agents` have access to the flow's `Tools` & `Resources`; hooks to datastores such as AlloyDB.
 
-the various `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & the native client.
+the OpenAI, Anthropic & Google `Agent` classes are just wrappers for a [maragu.dev/llm](https://maragu.dev/llm) client; which itself is simply an slog instance for logging & the native client.
+
+the `DeepseekAgent` is a wrapper for a [samjtro/go-dsr](https://github.com/samjtro/go-dsr) client.
 
 all tools take a `Config` struct, which is a wrapper for all of the common information you would need in a typical tool call, and return an error.
 

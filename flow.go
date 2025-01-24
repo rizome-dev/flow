@@ -15,12 +15,12 @@ limitations under the License.
 */
 package flow
 
-// High-level workflow abstraction
 type (
 	Flow struct {
 		AnthropicAgents map[string]*AnthropicAgent
 		GoogleAgents    map[string]*GoogleAgent
 		OpenAIAgents    map[string]*OpenAIAgent
+		DeepseekAgents  map[string]*DeepseekAgent
 		Tools           map[*Tool]func(*Config) error
 		Resources       map[string]*Resource
 	}
@@ -43,6 +43,12 @@ func GoogleAgents(agents map[string]*GoogleAgent) FlowOption {
 func OpenAIAgents(agents map[string]*OpenAIAgent) FlowOption {
 	return func(o *Flow) {
 		o.OpenAIAgents = agents
+	}
+}
+
+func DeepseekAgents(agents map[string]*DeepseekAgent) FlowOption {
+	return func(o *Flow) {
+		o.DeepseekAgents = agents
 	}
 }
 
@@ -77,6 +83,10 @@ func (f *Flow) AddGoogleAgent(name string, agent *GoogleAgent) {
 
 func (f *Flow) AddOpenAIAgent(name string, agent *OpenAIAgent) {
 	f.OpenAIAgents[name] = agent
+}
+
+func (f *Flow) AddDeepseekAgent(name string, agent *DeepseekAgent) {
+	f.DeepseekAgents[name] = agent
 }
 
 func (f *Flow) AddTool(tool *Tool, function func(*Config) error) {

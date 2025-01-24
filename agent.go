@@ -19,6 +19,7 @@ import (
 	"context"
 	"os"
 
+	"github.com/samjtro/go-dsr"
 	"maragu.dev/llm"
 )
 
@@ -37,6 +38,12 @@ type (
 
 	OpenAIAgent struct {
 		Client      *llm.OpenAIClient
+		Instruction string
+		Role        string
+	}
+
+	DeepseekAgent struct {
+		Client      *dsr.Client
 		Instruction string
 		Role        string
 	}
