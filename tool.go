@@ -54,6 +54,10 @@ func (c *Config) AddLastMessage(msg *Message) error {
 	return nil
 }
 
+func MarshalTool(func(*Config) error) *Tool {
+	return &Tool{}
+}
+
 // Pass the function's name, description & parameters
 // params should be formatted as map[parameterName]parameterType
 func CreateTool(name, desc string, params []*Parameter) *Tool {
